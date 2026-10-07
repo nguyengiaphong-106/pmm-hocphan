@@ -484,16 +484,13 @@ Dữ liệu trong bài được lưu trực tiếp trong biến `STUDENTS` ở b
 
 Muốn dữ liệu vẫn tồn tại sau khi khởi động lại ứng dụng thì cần lưu vào cơ sở dữ liệu hoặc một file dữ liệu bên ngoài.
 
+## 6. Trạng thái
 
+Các API và route chính đã được kiểm thử bằng curl trên Flask development server.
 
+## 7. Cấu trúc project
 
-## 6. Tr?ng th�i
-
-C�c API v� route ch�nh �? ��?c ki?m th? b?ng curl tr�n Flask development server.
-
-## 7. C?u tr�c project
-
-- .gitignore: lo?i tr? m�i tr�?ng ?o v� file t?m.
-- equirements.txt: danh s�ch th� vi?n Python c?n thi?t.
-- sodiem.py: m? ngu?n Flask.
-- README.md: h�?ng d?n ch?y, routes v� k?t qu? ki?m th?.
+- .gitignore: loại trừ môi trường ảo và file tạm.
+- requirements.txt: danh sách thư viện Python cần thiết.
+- sodiem.py: mã nguồn Flask.
+- README.md: hướng dẫn chạy, routes và kết quả kiểm thử.
