@@ -1,0 +1,21 @@
+
+{% extends "base.html" %}
+{% from "_macros.html" import item_card, pagination %}
+
+{% block title %}Thực đơn - Sông Hương{% endblock %}
+
+{% block content %}
+    <p class="eyebrow">HƯƠNG VỊ CỐ ĐÔ</p>
+
+    <h1>Thực đơn</h1>
+
+    <p>Trang {{ page }} / {{ pages }} · Chọn món yêu thích của bạn.</p>
+
+    <div class="menu-list">
+        {% for item in items %}
+            {{ item_card(item) }}
+        {% endfor %}
+    </div>
+
+    {{ pagination(page, pages, 'show_menu') }}
+{% endblock %}

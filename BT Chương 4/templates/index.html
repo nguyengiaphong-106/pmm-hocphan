@@ -1,0 +1,28 @@
+
+{% extends "base.html" %}
+
+{% block title %}Trang chủ - Sông Hương{% endblock %}
+
+{% block content %}
+    <p class="eyebrow">HƯƠNG VỊ CỐ ĐÔ</p>
+
+    <h1>Một chút cà phê,<br>một chút bình yên.</h1>
+
+    <p>
+        Chào mừng bạn đến với {{ shop.name }}.
+        Ghé quán, thưởng thức một ly cà phê
+        và tận hưởng nhịp sống chậm của Huế.
+    </p>
+
+    <p>
+        <a class="home-button" href="/menu">
+            Khám phá thực đơn →
+        </a>
+    </p>
+
+    <section class="info-panel">
+        <h2>Ghé thăm chúng tôi</h2>
+        <p><strong>Địa chỉ:</strong> {{ shop.address }}</p>
+        <p><strong>Điện thoại:</strong> {{ shop.phone }}</p>
+    </section>
+{% endblock %}
