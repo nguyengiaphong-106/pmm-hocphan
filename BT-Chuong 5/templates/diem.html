@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bài 2 - Tính điểm học phần</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            padding-top: 40px;
+        }
+        .container {
+            width: 420px;
+            margin: 0 auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+        h2 { margin-top: 0; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: inline-block; width: 140px; font-weight: bold; }
+        input {
+            padding: 7px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 190px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            font-size: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover { background-color: #218838; }
+        .error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 4px;
+            display: block;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/" class="back-link">← Quay về Trang chủ</a>
+    <h2>Tính điểm học phần</h2>
+    
+    <form method="POST" action="/bai2">
+        <!-- Chuyên cần -->
+        <div class="form-group">
+            <label for="cc">Chuyên cần (10%):</label>
+            <input type="text" name="cc" id="cc" value="{{ values.cc }}">
+            {% if errors.cc %}
+                <span class="error">{{ errors.cc }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Giữa kỳ -->
+        <div class="form-group">
+            <label for="gk">Giữa kỳ (30%):</label>
+            <input type="text" name="gk" id="gk" value="{{ values.gk }}">
+            {% if errors.gk %}
+                <span class="error">{{ errors.gk }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Cuối kỳ -->
+        <div class="form-group">
+            <label for="ck">Cuối kỳ (60%):</label>
+            <input type="text" name="ck" id="ck" value="{{ values.ck }}">
+            {% if errors.ck %}
+                <span class="error">{{ errors.ck }}</span>
+            {% endif %}
+        </div>
+
+        <button type="submit">Tính điểm</button>
+    </form>
+
+    <!-- Kết quả -->
+    {% if result %}
+        <div class="result">
+            Kết quả: {{ result }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

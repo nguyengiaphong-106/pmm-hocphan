@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Bài 1 - Máy tính cơ bản</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            padding-top: 40px;
+        }
+        .container {
+            width: 420px;
+            margin: 0 auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+        h2 { margin-top: 0; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: inline-block; width: 110px; font-weight: bold; }
+        input, select {
+            padding: 7px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 220px;
+            box-sizing: border-box;
+        }
+        select { width: 80px; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            font-size: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover { background-color: #0056b3; }
+        .error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 4px;
+            display: block;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/" class="back-link">← Quay về Trang chủ</a>
+    <h2>Máy tính cơ bản</h2>
+    
+    <form method="POST" action="/bai1">
+        <!-- Số a -->
+        <div class="form-group">
+            <label for="a">Số thứ nhất:</label>
+            <input type="text" name="a" id="a" value="{{ values.a }}">
+            {% if errors.a %}
+                <span class="error">{{ errors.a }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Phép toán -->
+        <div class="form-group">
+            <label for="op">Phép toán:</label>
+            <select name="op" id="op">
+                <option value="+" {% if values.op == '+' %}selected{% endif %}>+</option>
+                <option value="-" {% if values.op == '-' %}selected{% endif %}>-</option>
+                <option value="*" {% if values.op == '*' %}selected{% endif %}>*</option>
+                <option value="/" {% if values.op == '/' %}selected{% endif %}>/</option>
+            </select>
+        </div>
+
+        <!-- Số b -->
+        <div class="form-group">
+            <label for="b">Số thứ hai:</label>
+            <input type="text" name="b" id="b" value="{{ values.b }}">
+            {% if errors.b %}
+                <span class="error">{{ errors.b }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Lỗi chung -->
+        {% if errors.general %}
+            <span class="error" style="margin-bottom: 10px;">{{ errors.general }}</span>
+        {% endif %}
+
+        <button type="submit">Tính toán</button>
+    </form>
+
+    <!-- Kết quả -->
+    {% if result %}
+        <div class="result">
+            Kết quả: {{ result }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
