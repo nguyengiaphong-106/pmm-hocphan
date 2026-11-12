@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>Tổng quan</h1><p class="sub">Số liệu danh mục và sách hiện có trong kho.</p>
+<div class="stats">
+ <div class="stat"><b>{{ totals.n_categories }}</b><span>Danh mục</span></div>
+ <div class="stat"><b>{{ totals.n_titles }}</b><span>Đầu sách</span></div>
+ <div class="stat"><b>{{ totals.n_copies }}</b><span>Tổng số cuốn</span></div>
+ <div class="stat"><b>{{ '{:,.0f}'.format(totals.stock_value) }}</b><span>Giá trị tồn kho (đồng)</span></div>
+</div>
+<div class="two">
+ <section class="card"><h2>Số đầu sách theo danh mục</h2>
+  {% for r in per_category %}
+  <div class="row">
+   <a href="{{ url_for('books', category=r.id) }}">{{ r.name }}</a>
+   <div class="track"><div class="fill" style="width:{{ (r.n_titles / max_titles * 100)|round|int }}%"></div></div>
+   <span class="num" style="text-align:right">{{ r.n_titles }} đầu</span>
+  </div>
+  {% else %}<p class="empty">Chưa có danh mục. <a href="{{ url_for('category_new') }}">Thêm danh mục</a></p>{% endfor %}
+ </section>
+ <section class="card"><h2>Sách mới thêm</h2>
+  {% for b in latest %}
+  <div style="padding:8px 0;border-bottom:1px solid var(--line)">
+   <a href="{{ url_for('book_edit', bid=b.id) }}" style="color:var(--ink);font-weight:600;text-decoration:none">{{ b.title }}</a><br>
+   <span style="color:var(--muted);font-size:14px">{{ b.category_name }} · {{ b.quantity }} cuốn</span>
+  </div>
+  {% else %}<p class="empty">Chưa có sách nào.</p>{% endfor %}
+ </section>
+</div>
+<p style="margin-top:20px;display:flex;gap:10px">
+ <a class="btn" href="{{ url_for('book_new') }}">Thêm sách</a>
+ <a class="btn ghost" href="{{ url_for('category_new') }}">Thêm danh mục</a></p>
+{% endblock %}
