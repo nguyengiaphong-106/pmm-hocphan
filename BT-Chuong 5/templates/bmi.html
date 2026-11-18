@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Tính chỉ số BMI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            padding-top: 40px;
+        }
+        .container {
+            width: 440px;
+            margin: 0 auto;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+        h2 { margin-top: 0; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: inline-block; width: 140px; font-weight: bold; }
+        input {
+            padding: 7px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 210px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            font-size: 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover { background-color: #0056b3; }
+        .error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 4px;
+            display: block;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .green {
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            color: #2e7d32;
+        }
+        .orange {
+            background-color: #fff8e1;
+            border: 1px solid #ffe082;
+            color: #f57f17;
+        }
+        .red {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/" class="back-link">← Quay về Trang chủ</a>
+    <h2>Tính chỉ số BMI</h2>
+    
+    <form method="POST" action="/bmi">
+        <!-- Chiều cao -->
+        <div class="form-group">
+            <label for="height">Chiều cao (cm):</label>
+            <input type="text" name="height" id="height" value="{{ values.height }}">
+            {% if errors.height %}
+                <span class="error">{{ errors.height }}</span>
+            {% endif %}
+        </div>
+
+        <!-- Cân nặng -->
+        <div class="form-group">
+            <label for="weight">Cân nặng (kg):</label>
+            <input type="text" name="weight" id="weight" value="{{ values.weight }}">
+            {% if errors.weight %}
+                <span class="error">{{ errors.weight }}</span>
+            {% endif %}
+        </div>
+
+        <button type="submit">Tính BMI</button>
+    </form>
+
+    <!-- Kết quả -->
+    {% if result %}
+        <div class="result {{ result.color_class }}">
+            {{ result.bmi }} {{ result.category }}; nên có {{ result.ideal_range }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+
+{% macro item_card(item) %}
+    <article class="card">
+        <span class="card-number">
+            MÓN {{ "%02d" | format(item.id) }}
+        </span>
+
+        <h3>{{ item.name }}</h3>
+
+        <p class="price">{{ item.price | vnd }}</p>
+    </article>
+{% endmacro %}
+
+
+{% macro pagination(page, pages, endpoint) %}
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for(endpoint, page=page-1) }}">
+                &laquo; Trước
+            </a>
+        {% endif %}
+
+        {% for p in range(1, pages + 1) %}
+            {% if p == page %}
+                <strong>{{ p }}</strong>
+            {% else %}
+                <a href="{{ url_for(endpoint, page=p) }}">
+                    {{ p }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page < pages %}
+            <a href="{{ url_for(endpoint, page=page+1) }}">
+                Sau &raquo;
+            </a>
+        {% endif %}
+    </div>
+{% endmacro %}
