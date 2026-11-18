@@ -1,0 +1,35 @@
+{% extends 'admin/base.html' %}
+{% from '_macros.html' import status_badge, pager %}
+{% block title %}Đơn hàng · Quản trị{% endblock %}
+{% block admin %}
+<h1 class="h4 mb-3">Đơn hàng</h1>
+<ul class="nav nav-pills mb-3 gap-1">
+  {% for key, label, n in tabs %}
+  <li class="nav-item"><a class="nav-link {{ 'active' if key == status }}" href="{{ url_for('admin.orders', status=key or None, q=q or None) }}">{{ label }} ({{ n }})</a></li>
+  {% endfor %}
+</ul>
+<form class="row g-2 mb-3" method="get">
+  {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+  <div class="col-md-6"><input class="form-control" name="q" value="{{ q }}" placeholder="Mã đơn, tên khách hàng, số điện thoại..."></div>
+  <div class="col-md-2 d-grid"><button class="btn btn-outline-primary">Tìm</button></div>
+</form>
+
+<div class="card"><div class="table-responsive">
+<table class="table align-middle mb-0">
+  <thead><tr><th>Mã</th><th>Ngày đặt</th><th>Khách hàng</th><th>Điện thoại</th><th class="text-end">Tổng tiền</th><th>Trạng thái</th></tr></thead>
+  <tbody>
+  {% for o in pagination.items %}
+  <tr class="clickable" onclick="location='{{ url_for('admin.order_detail', order_id=o.id) }}'">
+    <td><a href="{{ url_for('admin.order_detail', order_id=o.id) }}">#{{ o.id }}</a></td>
+    <td>{{ o.created_at|dt('%d/%m/%Y') }}</td><td>{{ o.customer_name }}</td><td>{{ o.phone }}</td>
+    <td class="text-end">{{ o.total|money }}</td><td>{{ status_badge(o.status) }}</td>
+  </tr>
+  {% else %}<tr><td colspan="6" class="text-center text-muted py-4">Không có đơn hàng phù hợp.</td></tr>{% endfor %}
+  </tbody>
+  <tfoot><tr class="fw-semibold"><td colspan="4">{{ count }} đơn</td><td class="text-end" colspan="2">tổng giá trị {{ total|money }}</td></tr></tfoot>
+</table></div></div>
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <span class="small text-muted">Bấm vào một dòng để xem chi tiết đơn hàng</span>
+  {{ pager(pagination) }}
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'admin/base.html' %}
+{% from '_macros.html' import status_badge %}
+{% block title %}Tổng quan · Quản trị{% endblock %}
+{% block admin %}
+<h1 class="h4 mb-3">Tổng quan</h1>
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3"><div class="card stat"><div class="card-body"><div class="small text-muted">Đầu sách</div><div class="num">{{ book_count }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card stat warn"><div class="card-body"><div class="small text-muted">Đơn chờ xác nhận</div><div class="num">{{ pending }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card stat"><div class="card-body"><div class="small text-muted">Doanh thu tháng {{ month }}</div><div class="num">{{ revenue|money }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card stat warn"><div class="card-body"><div class="small text-muted">Sắp hết hàng</div><div class="num">{{ low_books|length }}</div></div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card mb-3"><div class="card-body">
+      <h2 class="h6">Đơn hàng mới nhất</h2>
+      <table class="table table-sm align-middle mb-2">
+        <thead><tr><th>Mã</th><th>Khách hàng</th><th class="text-end">Tổng tiền</th><th>Trạng thái</th></tr></thead>
+        <tbody>{% for o in latest %}
+          <tr class="clickable" onclick="location='{{ url_for('admin.order_detail', order_id=o.id) }}'">
+            <td>#{{ o.id }}</td><td>{{ o.customer_name }}</td><td class="text-end">{{ o.total|money }}</td><td>{{ status_badge(o.status) }}</td></tr>
+        {% else %}<tr><td colspan="4" class="text-muted">Chưa có đơn hàng.</td></tr>{% endfor %}</tbody>
+      </table>
+      <a href="{{ url_for('admin.orders') }}">Xem tất cả đơn hàng →</a>
+    </div></div>
+
+    <div class="card"><div class="card-body">
+      <h2 class="h6">Doanh thu 7 ngày</h2>
+      <div class="bars">
+        {% for d, v in chart %}
+        <div class="bar" title="{{ v|money }}">
+          <i style="height: {{ (v / chart_max * 90)|round|int if v else 0 }}px"></i>{{ d.strftime('%d/%m') }}
+        </div>{% endfor %}
+      </div>
+    </div></div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card"><div class="card-body">
+      <h2 class="h6">Sắp hết hàng (≤ 5)</h2>
+      <ul class="list-unstyled mb-2">
+        {% for b in low_books %}
+        <li class="d-flex justify-content-between py-1 border-bottom">
+          <a href="{{ url_for('admin.book_form', book_id=b.id) }}">{{ b.title }}</a>
+          <span class="{{ 'stock-zero' if b.stock == 0 }}">{{ b.stock }}</span></li>
+        {% else %}<li class="text-muted">Không có sách nào.</li>{% endfor %}
+      </ul>
+      <a href="{{ url_for('admin.books', stock='low') }}">Nhập thêm sách →</a>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

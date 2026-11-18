@@ -1,0 +1,33 @@
+{% macro status_badge(s) %}<span class="st st-{{ s }}">{{ STATUS_LABELS[s] }}</span>{% endmacro %}
+
+{% macro field(f, rows=3) %}
+<div class="mb-3">
+  <label class="form-label" for="{{ f.id }}">{{ f.label.text }}{% if f.flags.required %} *{% endif %}</label>
+  {% set cls = 'form-control is-invalid' if f.errors else 'form-control' %}
+  {% if f.type == 'TextAreaField' %}{{ f(class=cls, rows=rows) }}
+  {% elif f.type == 'SelectField' %}{{ f(class=cls.replace('form-control','form-select')) }}
+  {% else %}{{ f(class=cls) }}{% endif %}
+  {% if f.errors %}<div class="invalid-feedback d-block">{{ f.errors[0] }}</div>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro pager(p) %}
+{% if p.pages > 1 %}
+<nav><ul class="pagination pagination-sm mb-0">
+  <li class="page-item {{ '' if p.has_prev else 'disabled' }}"><a class="page-link" href="{{ page_url(p.prev_num) if p.has_prev else '#' }}">‹</a></li>
+  {% for n in p.iter_pages() %}
+    {% if n %}<li class="page-item {{ 'active' if n == p.page else '' }}"><a class="page-link" href="{{ page_url(n) }}">{{ n }}</a></li>
+    {% else %}<li class="page-item disabled"><span class="page-link">…</span></li>{% endif %}
+  {% endfor %}
+  <li class="page-item {{ '' if p.has_next else 'disabled' }}"><a class="page-link" href="{{ page_url(p.next_num) if p.has_next else '#' }}">›</a></li>
+</ul></nav>
+{% endif %}
+{% endmacro %}
+
+{% macro flashes() %}
+{% for cat, msg in get_flashed_messages(with_categories=true) %}
+<div class="alert alert-{{ cat if cat in ('success','danger','warning','info') else 'info' }} alert-dismissible fade show" role="alert">
+  {{ msg }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endmacro %}

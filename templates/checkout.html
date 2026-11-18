@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import field %}
+{% block title %}Đặt hàng · Nhà sách Sông Hương{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Thông tin khách hàng</h1>
+<div class="row g-4">
+  <div class="col-lg-7">
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}
+      {{ field(form.customer_name) }}
+      {{ field(form.phone) }}
+      {{ field(form.address, 2) }}
+      {{ field(form.email) }}
+      {{ field(form.note, 2) }}
+      <div class="mb-3">
+        <label class="form-label">Thanh toán *</label>
+        {% for v, label in form.payment.choices %}
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="payment" id="pay-{{ v }}" value="{{ v }}" {{ 'checked' if form.payment.data == v }}>
+          <label class="form-check-label" for="pay-{{ v }}">{{ label }}</label>
+        </div>{% endfor %}
+        {% if form.payment.errors %}<div class="text-danger small">{{ form.payment.errors[0] }}</div>{% endif %}
+      </div>
+      <button class="btn btn-accent">Xác nhận đặt hàng</button>
+      <a class="btn btn-link" href="{{ url_for('shop.cart') }}">← Quay lại giỏ hàng</a>
+    </form>
+  </div>
+  <div class="col-lg-5">
+    <div class="card"><div class="card-body">
+      <h2 class="h6">Đơn hàng của bạn</h2>
+      {% for ln in lines %}
+      <div class="d-flex justify-content-between small py-1"><span>{{ ln.book.title }} × {{ ln.quantity }}</span><span>{{ ln.line_total|money }}</span></div>
+      {% endfor %}
+      <hr>
+      <div class="d-flex justify-content-between"><span>Tạm tính</span><span>{{ subtotal|money }}</span></div>
+      <div class="d-flex justify-content-between"><span>Phí giao hàng</span><span>{{ 'Miễn phí' if fee == 0 else fee|money }}</span></div>
+      <div class="small text-muted">Miễn phí khi tạm tính từ 200.000 đ</div>
+      <hr>
+      <div class="d-flex justify-content-between fw-bold fs-5"><span>Tổng thanh toán</span><span class="price">{{ total|money }}</span></div>
+    </div></div>
+  </div>
+</div>
+{% endblock %}
